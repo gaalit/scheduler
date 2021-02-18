@@ -1,6 +1,6 @@
 
 //function that filters api/appointments and returns an array of appointments for that specific day
-function getAppointmentsForDay(state, day) {
+export default function getAppointmentsForDay(state, day) {
  let arrAppointmentsForDay = [];
  let filteredAppointment = [];
 
@@ -16,4 +16,3 @@ function getAppointmentsForDay(state, day) {
   return filteredAppointment;
 };
 
-export { getAppointmentsForDay};
