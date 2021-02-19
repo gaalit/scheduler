@@ -6,11 +6,16 @@ import Show from "./Show"
 import Empty from "./Empty"
 import Form from "./Form"
 import Status from './Status';
+import Confirm from './Confirm';
+
+import { transform } from '@babel/core';
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const DELETE = "DELETE"
+const CONFIRM = "CONFIRM"
 
 
 
@@ -25,8 +30,13 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-   transition(SAVING)
-   Promise.resolve(props.bookInterview(props.id, interview)).then(() => transition(SHOW)).catch(error => console.log(error))
+    transition(SAVING)
+    Promise.resolve(props.bookInterview(props.id, interview)).then(() => transition(SHOW))
+  }
+
+  function deleteAppointment() {
+    transition(DELETE);
+    Promise.resolve(props.cancelInterview(props.id)).then(() => transition(EMPTY))
   }
 
 
@@ -35,9 +45,12 @@ export default function Appointment(props) {
    {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
    {mode === SHOW && (
    <Show
+    id={props.id}
     student={props.interview.student}
     interviewer={props.interview.interviewer}
-  />)}
+    onDelete={() => transition(CONFIRM)}
+    />
+    )}
     {mode === CREATE && (
       <Form
       interviewers={props.interviewers}
@@ -48,6 +61,15 @@ export default function Appointment(props) {
     {mode === SAVING && (
       <Status message="Saving"/>
     )}
+    {mode === CONFIRM &&
+      <Confirm
+      message="Are you sure you would like to delete?"
+      onConfirm={deleteAppointment}
+      onCancel = {() => back()} />
+    }
+    {mode === DELETE && 
+    
+      <Status message= "Deleting" />}
   </article>
   );
 }
