@@ -6,7 +6,6 @@ import Show from "./Show"
 import Empty from "./Empty"
 import Form from "./Form"
 
-
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
@@ -29,7 +28,7 @@ export default function Appointment(props) {
   />)}
     {mode === CREATE && (
       <Form
-      interviewers={[]}
+      interviewers={props.interviewers}
       onCancel={() => back()}
       />
     )}
