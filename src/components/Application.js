@@ -27,6 +27,25 @@ export default function Application(props) {
       })
     }, [])
 
+    //If we know the id of the appointment slot that we want to book an interview for and the details of the interview, then we can edit the appointments object
+
+    function bookInterview(id, interview) {
+      const appointment = {
+        ...state.appointments[id],
+        interview: { ...interview }
+      };
+
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
+
+      return axios.put(`/api/appointments/${id}`, {interview}).then(() =>setState({...state,appointments}))
+      .catch(error => console.log(error));
+    }
+
+    
+
     const schedule = getAppointmentsForDay(state, state.day).map(appointment => { 
       const interview = getInterview(state, appointment.interview)
       return (
@@ -35,6 +54,7 @@ export default function Application(props) {
        time={appointment.time}
        interview={interview}
        interviewers={getInterviewersForDay(state, state.day)}
+       bookInterview={bookInterview}
        />
       );
     });
