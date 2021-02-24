@@ -14,7 +14,7 @@ function getAppointmentsForDay(state, day) {
   return filteredAppointment;
 }
 
-//function that transforms data from api to return a new object that matched the format needed for component.
+//function that transforms data from api to return a new object that matches the format needed for component.
 function getInterview(state, interview) {
   if (interview === null) {
     return null;
@@ -27,7 +27,6 @@ function getInterview(state, interview) {
 }
 
 //function that filters api/days and returns an array of interviewers for that specific day
-
 function getInterviewersForDay(state, day) {
   let arrInterviewersForDay = [];
   let filteredInterviewers = [];
