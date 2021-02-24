@@ -15,7 +15,6 @@ export default function useVisualMode(initial) {
   }
 
   function back() {
-    console.log("this is the history: ", history);
     if (history.length > 1) {
       setMode(history[history.length - 2]);
       setHistory((prev) => [...prev.slice(0, -1)]);
