@@ -14,23 +14,15 @@ export default function useApplicationData(initial) {
 
   //Increases (if canceled appointment) or decreases (if booked appointment) number of spots available
   const spotCounter = (action) => {
-    if (action === "book") {
-      const copyOfDaysArray = { ...state.days };
-      for (let day in copyOfDaysArray) {
-        if (copyOfDaysArray[day].name === state.day) {
-          copyOfDaysArray[day].spots -= 1;
-        }
+    const copyOfDaysArray = [...state.days];
+    const modifier = action === "book" ? -1 : 1;
+
+    for (let day in copyOfDaysArray) {
+      if (copyOfDaysArray[day].name === state.day) {
+        copyOfDaysArray[day].spots += modifier;
       }
-      setState({ ...state, days: [copyOfDaysArray] });
-    } else if (action === "cancel") {
-      const copyOfDaysArray = { ...state.days };
-      for (let day in copyOfDaysArray) {
-        if (copyOfDaysArray[day].name === state.day) {
-          copyOfDaysArray[day].spots += 1;
-        }
-      }
-      setState({ ...state, days: [copyOfDaysArray] });
     }
+    return copyOfDaysArray;
   };
 
   //Creates a new interview and performs put request to api
@@ -45,9 +37,11 @@ export default function useApplicationData(initial) {
       [id]: appointment,
     };
 
-    return axios
-      .put(`/api/appointments/${id}`, { interview })
-      .then(() => setState({ ...state, appointments }, spotCounter("book")));
+    const days = spotCounter("book");
+
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      setState({ ...state, appointments, days });
+    });
   };
 
   //Deletes interview and deletes from api
@@ -62,9 +56,11 @@ export default function useApplicationData(initial) {
       [id]: appointment,
     };
 
-    return axios
-      .delete(`/api/appointments/${id}`)
-      .then(() => setState({ ...state, appointments }, spotCounter("cancel")));
+    const days = spotCounter("cancel");
+
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      setState({ ...state, appointments, days });
+    });
   };
 
   useEffect(() => {
