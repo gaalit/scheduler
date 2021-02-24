@@ -81,10 +81,23 @@ export default {
   }),
   put: jest.fn((url) => {
     if (url === "/api/appointments/1") {
-      console.log("MOCK PUT");
       return Promise.resolve({
-        status: 204,
-        statusText: "Test",
+        status: 200,
+        statusText: "OK",
+      });
+    }
+    if (url === "/api/appointments/2") {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
+      });
+    }
+  }),
+  delete: jest.fn((url) => {
+    if (url === "/api/appointments/2") {
+      return Promise.resolve({
+        status: 200,
+        statusText: "OK",
       });
     }
   }),
