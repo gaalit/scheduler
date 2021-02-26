@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import "./styles.scss";
 import useVisualMode from "../../hooks/useVisualMode";
 import Header from "./Header";
@@ -8,8 +8,6 @@ import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
 import Error from "./Error";
-
-import { transform } from "@babel/core";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
