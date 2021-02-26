@@ -7,10 +7,15 @@ export default function Form(props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
 
-  //Checks if user has written something in the input field or if it's left blank
+  //Checks if user has written something in the input field or interviewer was selected
   function validate() {
     if (name === "") {
       setError("Student name cannot be blank");
+      return;
+    }
+
+    if (!interviewer) {
+      setError("Interviewer must be selected");
       return;
     }
 
