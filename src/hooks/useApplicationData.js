@@ -37,10 +37,25 @@ export default function useApplicationData(initial) {
       [id]: appointment,
     };
 
-    const days = spotCounter("book");
+    //verifies if we are creating a new appointment (makes sure we don't updated spotcounter if editing appointment)
+    const getSpotsForDay = (day) =>
+      day.appointments.length -
+      day.appointments.reduce(
+        (count, id) => (appointments[id].interview ? count + 1 : count),
+        0
+      );
+
+    const days = state.days.map((day) => {
+      return day.appointments.includes(id)
+        ? {
+            ...day,
+            spots: getSpotsForDay(day),
+          }
+        : day;
+    });
 
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
-      setState({ ...state, appointments, days });
+      setState((prev) => ({ ...prev, appointments, days }));
     });
   };
 
